@@ -34,12 +34,12 @@ else
     exit
 fi
 
-echo "Please check SDK_PATH & BIN_PATH, enter (Y/y) to continue:"
-read input
+#echo "Please check SDK_PATH & BIN_PATH, enter (Y/y) to continue:"
+#read input
 
-if [[ $input != Y ]] && [[ $input != y ]]; then
-    exit
-fi
+#if [[ $input != Y ]] && [[ $input != y ]]; then
+#    exit
+#fi
 
 echo ""
 
@@ -51,16 +51,18 @@ echo "boot mode: $boot"
 echo ""
 
 echo "STEP 2: choose bin generate(0=eagle.flash.bin+eagle.irom0text.bin, 1=user1.bin, 2=user2.bin)"
-echo "enter (0/1/2, default 0):"
+echo "enter (0/1/2, default 1):"
 read input
 
 if [ -z "$input" ]; then
-    if [ $boot != none ]; then
-    	boot=none
-	echo "ignore boot"
+    if [ $boot == none ]; then
+    	app=0
+	echo "choose no boot before"
+	echo "generate bin: eagle.flash.bin+eagle.irom0text.bin"
+    else
+	app=1
+        echo "generate bin: user1.bin"
     fi
-    app=0
-    echo "generate bin: eagle.flash.bin+eagle.irom0text.bin"
 elif [ $input == 1 ]; then
     if [ $boot == none ]; then
     	app=0
@@ -135,13 +137,13 @@ echo "    3=2048KB( 512KB+ 512KB)"
 echo "    4=4096KB( 512KB+ 512KB)"
 echo "    5=2048KB(1024KB+1024KB)"
 echo "    6=4096KB(1024KB+1024KB)"
-echo "enter (0/2/3/4/5/6, default 0):"
+echo "enter (0/2/3/4/5/6, default 3):"
 read input
 
 if [ -z "$input" ]; then
-    spi_size_map=0
-    echo "spi size: 512KB"
-    echo "spi ota map:  256KB + 256KB"
+    spi_size_map=3
+    echo "spi size: 2048KB"
+    echo "spi ota map:  512KB + 512KB"
 elif [ $input == 2 ]; then
     spi_size_map=2
     echo "spi size: 1024KB"
