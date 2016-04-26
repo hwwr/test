@@ -48,9 +48,9 @@
 #define DEV_CATEGORY "LIVING"
 #define DEV_TYPE "LIGHT"
 #ifdef PASS_THROUGH
-#define DEV_MODEL "ALINKTEST_LIVING_LIGHT_SMARTLED_LUA"
-#define ALINK_KEY "bIjq3G1NcgjSfF9uSeK2"
-#define ALINK_SECRET "W6tXrtzgQHGZqksvJLMdCPArmkecBAdcr2F5tjuF"
+#define DEV_MODEL "HEKR_LIVING_LIGHT_LIGHT"
+#define ALINK_KEY "gHxAObNa1wqyeMHzZdGX"
+#define ALINK_SECRET "nedimQQJjzf543L4wLpUj2ECj7nDtYV1r0G2QaYW"
 #else
 #define DEV_MODEL "HEKR_LIVING_LIGHT_M002"
 #define ALINK_KEY "q9HjnKJqpDbRsFAWGwIY"
@@ -116,6 +116,10 @@ static int ICACHE_FLASH_ATTR alink_device_post_data(alink_down_cmd_ptr down_cmd)
 		sprintf(buffer, main_dev_params, virtual_device.power,
 			virtual_device.temp_value, virtual_device.light_value,
 			virtual_device.time_delay, virtual_device.work_mode);
+		
+		printf(buffer);//////////////
+		
+		
 		up_cmd.param = buffer;
 		if (down_cmd != NULL) {
 			up_cmd.target = down_cmd->account;
@@ -261,8 +265,17 @@ int ICACHE_FLASH_ATTR print_mem_callback(void *a, void *b)
 static int ICACHE_FLASH_ATTR execute_cmd(const char *rawdata, int len)
 {
 	int ret = 0, i = 0;
-	if (len < 1)
-		ret = -1;
+	if (len < 1) return -1;
+
+	//send data to MCU
+#if USER_UART_CTRL_DEV_EN
+	uart0_write_data(rawdata, len);
+#endif
+
+
+	//virtual device status should update when UART recv SUCCESS echo
+	//there for debug
+
 	for (i = 0; i < len; i++) {
 		wsf_deb("%2x ", rawdata[i]);
 		switch (i) {

@@ -79,7 +79,8 @@ static u8 ICACHE_FLASH_ATTR cus_uart_data_handle(char *dat_in, int in_len, char 
 	debug_print_hex_data(dat_in, in_len);
 
 
-
+	//接收到MCU发来的串口数据
+	//根据串口协议，更新virtual device status
 	device_status_change = 1;///////////////////
 
 
